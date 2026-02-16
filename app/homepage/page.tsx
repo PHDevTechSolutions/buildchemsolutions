@@ -3,7 +3,7 @@ import { LogoSection } from "@/components/homepage/logo-section";
 import { ProblemSection } from "@/components/homepage/problem-section";
 import { SolutionSection } from "@/components/homepage/solution-section";
 import { FeaturesSection } from "@/components/homepage/features-section";
-import { TestimonialsSection } from "@/components/homepage/testimonials-section";
+import { ReelsSection } from "@/components/homepage/testimonials-section";
 import { PricingSection } from "@/components/homepage/pricing-section";
 import { FaqSection } from "@/components/homepage/faq-section";
 import { CtaSection } from "@/components/homepage/cta-section";
@@ -18,7 +18,7 @@ export default function Home() {
         <ProblemSection />
         <SolutionSection />
         <FeaturesSection />
-        <TestimonialsSection />
+        <ReelsSection />
         <PricingSection />
         <FaqSection />
         <CtaSection />
