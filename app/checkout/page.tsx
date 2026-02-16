@@ -12,7 +12,7 @@ import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 export default function CheckoutPage() {
   const router = useRouter();
   const { cart, clearCart } = useCart();
-
+ 
   const [formData, setFormData] = useState({
     email: "",
     name: "",

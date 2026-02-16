@@ -44,7 +44,7 @@ export default function SolutionsPage() {
     <main className="min-h-screen bg-background">
       <Header />
 
-      {/* Hero Section */}
+      {/* Hero */}
       <section className="relative h-[40vh] min-h-[300px] flex items-center justify-center">
         <Image
           src="/images/hero-image.jpg"
@@ -55,15 +55,16 @@ export default function SolutionsPage() {
         />
         <div className="absolute inset-0 bg-black/60" />
         <div className="relative z-10 text-center px-4">
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-white mb-4 uppercase tracking-tighter italic">
-            Our <span className="text-accent">Solutions</span>
-          </h1>
-          <p className="text-lg md:text-xl text-white/90 font-medium max-w-2xl mx-auto uppercase tracking-widest">
-            Comprehensive industrial solutions for your business needs
+          <p className="text-xs md:text-sm uppercase tracking-wider text-white/70 mb-3">
+            Buildchem Solutions
           </p>
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-semibold text-white tracking-tight">
+            Our <span className="text-white/60">Solutions</span>
+          </h1>
         </div>
       </section>
 
+      {/* Grid */}
       <section className="py-16 md:py-24 bg-background">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6 lg:gap-8">
@@ -74,26 +75,24 @@ export default function SolutionsPage() {
                 className="block group"
               >
                 <div
-                  className="h-full bg-card border border-border group-hover:border-primary group-hover:shadow-lg overflow-hidden transition-all duration-500 animate-fade-in relative rounded-[var(--radius-xl)] flex flex-col"
+                  className="h-full bg-card border border-border group-hover:border-primary/50 group-hover:shadow-sm overflow-hidden transition-all duration-300 animate-fade-in relative rounded-[var(--radius-lg)] flex flex-col"
                   style={{ animationDelay: `${index * 0.05}s` }}
                 >
-                  {/* Image */}
                   <div className="relative aspect-[4/3] overflow-hidden">
                     <Image
                       src={solution.mainImage || "/placeholder.svg"}
                       alt={solution.title}
                       fill
-                      className="object-cover group-hover:scale-110 transition-transform duration-700"
+                      className="object-cover group-hover:scale-105 transition-transform duration-500"
                     />
-                    <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-500" />
+                    <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors duration-300" />
                   </div>
 
-                  {/* Text */}
-                  <div className="p-4 md:p-6 flex-grow flex flex-col justify-center">
-                    <h3 className="text-sm md:text-base font-semibold text-foreground group-hover:text-primary transition-colors duration-300 leading-snug">
+                  <div className="p-4 md:p-5 flex-grow flex flex-col justify-center">
+                    <h3 className="text-sm font-medium text-foreground group-hover:text-primary transition-colors duration-200 leading-snug">
                       {solution.title}
                     </h3>
-                    <div className="mt-2 w-8 h-0.5 bg-primary transform origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-500 rounded-full" />
+                    <div className="mt-2 w-6 h-px bg-primary transform origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300" />
                   </div>
                 </div>
               </Link>
@@ -102,7 +101,7 @@ export default function SolutionsPage() {
 
           {solutions.length === 0 && (
             <div className="text-center py-20">
-              <p className="text-base font-medium text-muted-foreground">
+              <p className="text-sm text-muted-foreground">
                 No solutions available at this time.
               </p>
             </div>

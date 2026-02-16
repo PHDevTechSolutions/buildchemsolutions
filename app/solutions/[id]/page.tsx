@@ -99,12 +99,12 @@ export default function SolutionDetailPage() {
     return (
       <main className="min-h-screen bg-background">
         <div className="py-24 text-center flex flex-col items-center justify-center min-h-[60vh]">
-          <h1 className="text-4xl font-bold text-foreground mb-4">
+          <h1 className="text-3xl font-semibold text-foreground mb-4">
             Solution Not Found
           </h1>
           <Link
             href="/solutions"
-            className="text-sm font-medium text-primary underline underline-offset-4 hover:opacity-70 transition-opacity"
+            className="text-sm font-medium text-muted-foreground underline underline-offset-4 hover:text-foreground transition-colors"
           >
             Return to Solutions
           </Link>
@@ -116,7 +116,7 @@ export default function SolutionDetailPage() {
 
   return (
     <main className="min-h-screen bg-background text-foreground">
-      {/* Hero */}
+      {/* ── Hero ── */}
       <section className="relative h-[60vh] min-h-[500px] flex items-end">
         <div className="absolute inset-0 z-0">
           {solution.mainImage && (
@@ -134,26 +134,26 @@ export default function SolutionDetailPage() {
         <div className="relative z-10 w-full max-w-7xl mx-auto px-6 lg:px-8 pb-16 md:pb-24">
           <Link
             href="/solutions"
-            className="inline-flex items-center gap-2 text-white/70 hover:text-white transition-colors mb-6 text-xs uppercase font-medium tracking-[0.18em]"
+            className="inline-flex items-center gap-2 text-white/60 hover:text-white transition-colors mb-6 text-xs uppercase font-medium tracking-[0.18em]"
           >
             <ArrowLeft size={14} /> Back to Solutions
           </Link>
-          <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold text-white uppercase italic tracking-tighter mb-6 leading-[0.9]">
+          <h1 className="text-5xl md:text-7xl font-semibold text-white tracking-tight mb-4 leading-tight">
             {solution.title}
           </h1>
-          <p className="text-lg md:text-xl text-white/80 max-w-3xl font-normal leading-relaxed">
+          <p className="text-base md:text-lg text-white/70 max-w-2xl leading-relaxed">
             {solution.description}
           </p>
         </div>
       </section>
 
-      {/* Series Accordion */}
+      {/* ── Series Accordion ── */}
       {seriesList.length > 0 && (
-        <section className="py-24 bg-card border-t border-border">
+        <section className="py-20 bg-background border-t border-border">
           <div className="max-w-5xl mx-auto px-6 lg:px-8">
-            <div className="flex items-center gap-4 mb-16">
+            <div className="flex items-center gap-4 mb-12">
               <div className="h-px bg-border flex-1" />
-              <h2 className="text-xl font-semibold uppercase tracking-[0.18em] text-foreground text-center">
+              <h2 className="text-sm font-semibold uppercase tracking-[0.2em] text-muted-foreground text-center">
                 Available Series &amp; Specs
               </h2>
               <div className="h-px bg-border flex-1" />
