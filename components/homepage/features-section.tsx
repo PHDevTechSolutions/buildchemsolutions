@@ -1,17 +1,16 @@
-"use client";
+"use client"
 
 import React from "react"
-
-import { motion } from "framer-motion";
-import { Brain, Shield, Globe } from "lucide-react";
-import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
+import { motion, Variants } from "framer-motion"
+import { Brain, Shield, Globe } from "lucide-react"
+import { cn } from "@/lib/utils"
+import { Button } from "@/components/ui/button"
 
 interface FeatureItem {
-  id: string;
-  icon: React.ReactNode;
-  title: string;
-  description: string;
+  id: string
+  icon: React.ReactNode
+  title: string
+  description: string
 }
 
 const DEFAULT_FEATURES: FeatureItem[] = [
@@ -57,21 +56,23 @@ const DEFAULT_FEATURES: FeatureItem[] = [
     description:
       "Continuously updated threat feeds from global sources ensure you're protected against the latest attack methods.",
   },
-];
+]
 
-const containerVariants = {
-  hidden: {
-    opacity: 0,
-  },
+/* =========================
+   Animation Variants
+========================= */
+
+const containerVariants: Variants = {
+  hidden: { opacity: 0 },
   visible: {
     opacity: 1,
     transition: {
       staggerChildren: 0.1,
     },
   },
-};
+}
 
-const itemVariants = {
+const itemVariants: Variants = {
   hidden: {
     opacity: 0,
     y: 20,
@@ -81,16 +82,16 @@ const itemVariants = {
     y: 0,
     transition: {
       duration: 0.5,
-      ease: "easeOut",
+      ease: [0.16, 1, 0.3, 1], // ✅ Fixed TS-safe easing
     },
   },
-};
+}
 
 interface FeaturesSectionProps {
-  preHeading?: string;
-  headline?: string;
-  features?: FeatureItem[];
-  className?: string;
+  preHeading?: string
+  headline?: string
+  features?: FeatureItem[]
+  className?: string
 }
 
 export function FeaturesSection({
@@ -107,20 +108,22 @@ export function FeaturesSection({
       )}
     >
       <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-16">
+        
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
           className="flex flex-col gap-6 mb-16"
         >
           <div className="flex items-center gap-3 px-4 py-2 border border-gray-300 w-fit">
-            <div className="w-2.5 h-2.5 bg-blue-600" />
+            <div className="w-2.5 h-2.5 bg-[#004AAD]" />
             <span className="text-sm font-medium text-gray-600 tracking-wide">
               {preHeading}
             </span>
           </div>
+
           <h2 className="text-balance text-gray-900 text-4xl md:text-5xl lg:text-6xl font-normal leading-[1.1] max-w-[700px] tracking-tight">
             {headline.split(" ").map((word, i) => (
               <motion.span
@@ -128,7 +131,11 @@ export function FeaturesSection({
                 initial={{ filter: "blur(10px)", opacity: 0 }}
                 whileInView={{ filter: "blur(0px)", opacity: 1 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: i * 0.05 }}
+                transition={{
+                  duration: 0.4,
+                  delay: i * 0.05,
+                  ease: [0.16, 1, 0.3, 1],
+                }}
                 className="inline-block mr-[0.25em]"
               >
                 {word}
@@ -153,17 +160,17 @@ export function FeaturesSection({
             >
               {/* Icon */}
               <div className="mb-8">
-                <div className="w-10 h-10 flex items-center justify-center rounded-lg bg-blue-600 shadow-lg shadow-blue-600/20 transform transition-transform group-hover:scale-110 duration-300">
+                <div className="w-10 h-10 flex items-center justify-center rounded-lg bg-[#004AAD] shadow-lg shadow-[#004AAD]/20 transform transition-transform group-hover:scale-110 duration-300">
                   {feature.icon}
                 </div>
               </div>
 
               {/* Content */}
               <div className="flex flex-col gap-3">
-                <h4 className="text-gray-900 text-xl font-medium tracking-tight font-sans">
+                <h4 className="text-gray-900 text-xl font-medium tracking-tight">
                   {feature.title}
                 </h4>
-                <p className="text-balance text-gray-600 text-base leading-relaxed font-sans">
+                <p className="text-balance text-gray-600 text-base leading-relaxed">
                   {feature.description}
                 </p>
               </div>
@@ -176,24 +183,25 @@ export function FeaturesSection({
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.3 }}
+          transition={{ duration: 0.6, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
           className="flex flex-col sm:flex-row items-center justify-center gap-4"
         >
           <Button
             size="lg"
-            className="bg-blue-600 text-white hover:bg-blue-700 px-8"
+            className="bg-[#004AAD] text-white hover:bg-[#003a8c] px-8"
           >
             Explore Full Features
           </Button>
+
           <Button
             size="lg"
             variant="outline"
-            className="border-blue-600 text-blue-600 hover:bg-blue-50 bg-white px-8"
+            className="border-[#004AAD] text-[#004AAD] hover:bg-[#004AAD]/10 bg-white px-8"
           >
             Compare vs. Legacy
           </Button>
         </motion.div>
       </div>
     </section>
-  );
+  )
 }
