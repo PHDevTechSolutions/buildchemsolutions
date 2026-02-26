@@ -1,0 +1,116 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  /* Brutalist Color Palette - Forced High Contrast */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+
+  /* Mapping Google Fonts to Tailwind Variables */
+  --font-bebas: var(--font-bebas);
+  --font-bricolage: var(--font-bricolage);
+
+  /* Overriding Shadcn Defaults to Hard Edges */
+  --radius-sm: 0px;
+  --radius-md: 0px;
+  --radius-lg: 0px;
+  --radius-xl: 0px;
+  --radius-2xl: 0px;
+
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+
+  /* Custom Brutalist Animations */
+  @keyframes marquee {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
+  --animate-marquee: marquee 20s linear infinite;
+}
+
+:root {
+  /* HARD EDGES: Zero rounding for the Brutalist look */
+  --radius: 0px;
+
+  /* PURE BLACK & WHITE (using OKLCH for precision) */
+  --background: oklch(1 0 0); /* Pure White */
+  --foreground: oklch(0 0 0); /* Pure Black */
+
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0 0 0);
+
+  --primary: oklch(0 0 0);
+  --primary-foreground: oklch(1 0 0);
+  --secondary: oklch(0.95 0 0);
+  --secondary-foreground: oklch(0 0 0);
+
+  --muted: oklch(0.98 0 0);
+  --muted-foreground: oklch(0.4 0 0);
+  --accent: oklch(0 0 0);
+  --accent-foreground: oklch(1 0 0);
+
+  --border: oklch(0 0 0);
+  --input: oklch(0 0 0);
+  --ring: oklch(0 0 0);
+}
+
+.dark {
+  --background: oklch(0 0 0);
+  --foreground: oklch(1 0 0);
+  --card: oklch(0 0 0);
+  --card-foreground: oklch(1 0 0);
+  --primary: oklch(1 0 0);
+  --primary-foreground: oklch(0 0 0);
+  --border: oklch(1 0 0 / 20%);
+}
+
+@layer base {
+  /* GLOBAL UPPERCASE ENFORCEMENT */
+  *,
+  *::before,
+  *::after {
+    border-color: var(--border);
+    outline-color: var(--ring);
+
+    border-width: 0px;
+    border-style: solid;
+
+    text-transform: uppercase !important;
+    letter-spacing: -0.02em;
+  }
+
+  /* Force specific form elements */
+  input,
+  textarea,
+  select,
+  button {
+    text-transform: uppercase !important;
+    border-color: var(--border);
+  }
+
+  ::placeholder {
+    text-transform: uppercase !important;
+    opacity: 0.5;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased overflow-x-hidden;
+    font-family: var(--font-bricolage), sans-serif;
+  }
+
+  h1,
+  h2,
+  h3 {
+    @apply font-bebas font-black;
+    margin: 0;
+  }
+}
