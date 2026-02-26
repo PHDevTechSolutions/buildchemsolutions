@@ -1,52 +1,53 @@
 import React from "react";
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Space_Grotesk } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 import { Toaster } from "react-hot-toast";
-import { Analytics } from "@vercel/analytics/react";
+import "./globals.css";
 
 import { FloatingCartButton } from "@/components/solutions/floating-cart-button";
 import { CartProvider } from "@/lib/cart-context";
 
-import "./globals.css";
 
-/* -----------------------------
-   Font setup (Next.js native)
------------------------------- */
-const inter = Inter({
+const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
+const interTight = Space_Grotesk({
   subsets: ["latin"],
-  display: "swap",
-  variable: "--font-inter",
+  variable: "--font-inter-tight",
 });
 
-/* -----------------------------
-   Metadata
------------------------------- */
 export const metadata: Metadata = {
-  title: "Buildchem Solutions Inc. - Your Partner in Industrial Excellence",
+  title: "Buildchem Solutions Inc. | Concrete Made Better",
   description:
-    "Leading industrial holdings company managing construction, cement production, and industrial materials companies with strength, reliability, and scale.",
+    "A leading provider of construction chemicals and building materials solutions.",
+  generator: "v0.app",
   icons: {
     icon: [
-      { url: "/images/logo-vah.png", media: "(prefers-color-scheme: light)" },
-      { url: "/images/logo-vah.png", media: "(prefers-color-scheme: dark)" },
-      { url: "/images/logo-vah.png", type: "image/png" },
+      {
+        url: "/icon-light-32x32.png",
+        media: "(prefers-color-scheme: light)",
+      },
+      {
+        url: "/icon-dark-32x32.png",
+        media: "(prefers-color-scheme: dark)",
+      },
+      {
+        url: "/icon.svg",
+        type: "image/svg+xml",
+      },
     ],
     apple: "/apple-icon.png",
   },
 };
 
-/* -----------------------------
-   Root Layout
------------------------------- */
 export default function RootLayout({
   children,
-}: {
+}: Readonly<{
   children: React.ReactNode;
-}) {
+}>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en">
       <body
-        className={`${inter.className} antialiased`}
+        className={`${inter.variable} ${interTight.variable} font-sans antialiased`}
       >
         <CartProvider>
           {children}

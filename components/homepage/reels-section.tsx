@@ -10,6 +10,24 @@ export function ReelsSection() {
   const [videos, setVideos] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [visibleCount, setVisibleCount] = useState(1); // Default to mobile
+
+  // Handle responsive item count
+  useEffect(() => {
+    const updateVisibleCount = () => {
+      if (window.innerWidth >= 1024) {
+        setVisibleCount(3); // Desktop
+      } else if (window.innerWidth >= 768) {
+        setVisibleCount(2); // Tablet
+      } else {
+        setVisibleCount(1); // Mobile
+      }
+    };
+
+    updateVisibleCount();
+    window.addEventListener("resize", updateVisibleCount);
+    return () => window.removeEventListener("resize", updateVisibleCount);
+  }, []);
 
   useEffect(() => {
     const fetchVideos = async () => {
@@ -39,9 +57,12 @@ export function ReelsSection() {
     setCurrentIndex((prev) => (prev === 0 ? videos.length - 1 : prev - 1));
   };
 
+  // Logic to handle infinite wrapping based on visibleCount
   const currentVideos = videos
-    .slice(currentIndex, currentIndex + 3)
-    .concat(videos.slice(0, Math.max(0, currentIndex + 3 - videos.length)));
+    .slice(currentIndex, currentIndex + visibleCount)
+    .concat(
+      videos.slice(0, Math.max(0, currentIndex + visibleCount - videos.length)),
+    );
 
   return (
     <section className="w-full bg-white py-24 md:py-32 border-b border-gray-200/50">
@@ -95,15 +116,21 @@ export function ReelsSection() {
             <p className="text-sm text-gray-400">Loading reels...</p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-0">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-0">
             {currentVideos.map((videoPath, index) => {
               const videoId = videoPath.split("/").pop()?.split("?")[0];
               return (
                 <div
                   key={`${videoId}-${index}`}
-                  className={`p-8 border-gray-200/50 ${
-                    index !== 2 ? "md:border-r border-b md:border-b-0" : ""
-                  }`}
+                  className={`p-8 border-gray-200/50 
+                    /* Mobile: border bottom on all but last */
+                    border-b last:border-b-0 
+                    /* Tablet (md): 2 columns, border right on odd items, remove bottom border on last two if needed */
+                    md:even:border-l md:border-b 
+                    /* Desktop (lg): 3 columns, reset tablet borders and apply 3-col logic */
+                    lg:border-l-0 lg:border-r lg:last:border-r-0 lg:border-b-0
+                    ${index === 0 ? "lg:border-l-0" : ""}
+                  `}
                 >
                   <iframe
                     src={`https://www.tiktok.com/player/v1/${videoId}?music_info=1&description=1&loop=1`}
@@ -111,7 +138,7 @@ export function ReelsSection() {
                     width="100%"
                     allow="fullscreen"
                     title={`TikTok video ${videoId}`}
-                    className="rounded-xl"
+                    className="rounded-xl shadow-sm"
                   />
                 </div>
               );
