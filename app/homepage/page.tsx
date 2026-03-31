@@ -1,0 +1,28 @@
+import { Hero } from "@/components/homepage/hero";
+import { LogoSection } from "@/components/homepage/logo-section";
+import { SolutionsSection } from "@/components/homepage/solutions-section";
+import { ReelsSection } from "@/components/homepage/reels-section";
+import { FaqSection } from "@/components/homepage/faq-section";
+import { CtaSection } from "@/components/homepage/cta-section";
+import { Footer } from "@/components/homepage/footer";
+import { AboutSection } from "@/components/homepage/about-section";
+import Navbar from "@/components/homepage/nav";
+
+export default function Home() {
+  return (
+    <>
+    <Navbar />
+      <main>
+        <Hero />
+        <LogoSection />
+        <AboutSection />
+        <SolutionsSection />
+        <ReelsSection />
+        <FaqSection />
+        <CtaSection />
+      </main>
+
+      <Footer />
+    </>
+  );
+}
