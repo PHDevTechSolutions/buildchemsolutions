@@ -5,9 +5,8 @@ import { Analytics } from "@vercel/analytics/next";
 import { Toaster } from "react-hot-toast";
 import "./globals.css";
 
-import { FloatingCartButton } from "@/components/solutions/floating-cart-button";
+import { FloatingMenu } from "@/components/floating-menu";
 import { CartProvider } from "@/lib/cart-context";
-
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 const interTight = Space_Grotesk({
@@ -51,7 +50,7 @@ export default function RootLayout({
       >
         <CartProvider>
           {children}
-          <FloatingCartButton />
+          <FloatingMenu />
           <Toaster />
           <Analytics />
         </CartProvider>
