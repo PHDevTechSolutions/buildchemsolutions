@@ -152,7 +152,12 @@ export default function Navbar() {
 
         {/* ── NAV BAR ── */}
         <nav
-          className="h-20"
+          className={cn(
+            "h-20 transition-[border-color] duration-500",
+            isActive
+              ? "border-b border-[#004AAD]"
+              : "border-b border-transparent",
+          )}
           onMouseEnter={() => setIsNavHovered(true)}
           onMouseLeave={() => {
             setIsNavHovered(false);
@@ -241,8 +246,10 @@ export default function Navbar() {
           {/* ── DESKTOP MEGA MENU ── */}
           <div
             className={cn(
-              "hidden xl:grid w-full transition-[grid-template-rows] duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]",
-              isSolutionsOpen ? "grid-rows-[1fr]" : "grid-rows-[0fr]",
+              "hidden xl:grid w-full transition-[grid-template-rows,border-color] duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] border-b",
+              isSolutionsOpen
+                ? "grid-rows-[1fr] border-[#004AAD]"
+                : "grid-rows-[0fr] border-transparent",
             )}
             onMouseEnter={openDropdown}
             onMouseLeave={scheduleClose}
@@ -251,7 +258,7 @@ export default function Navbar() {
               className={cn(
                 "overflow-hidden transition-[opacity,border-color] duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] border-t bg-white",
                 isSolutionsOpen
-                  ? "opacity-100 border-black/5"
+                  ? "opacity-100 border-[#004AAD]"
                   : "opacity-0 border-transparent",
               )}
             >
