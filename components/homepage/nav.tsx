@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { ChevronRight, Menu, X, ArrowLeft, ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -34,6 +34,11 @@ export default function Navbar() {
     Record<string, Solution[]>
   >({});
   const [loading, setLoading] = useState(false);
+
+  // Ref for the entire nav wrapper so we can detect real mouse-leave
+  const navWrapperRef = useRef<HTMLDivElement>(null);
+  // Ref to delay-close the dropdown
+  const closeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     if ((isSolutionsOpen || isMobileMenuOpen) && solutions.length === 0) {
@@ -87,6 +92,43 @@ export default function Navbar() {
     }
   }, [isMobileMenuOpen]);
 
+  // ── Dropdown helpers ─────────────────────────────────────────────────────
+  const openDropdown = () => {
+    if (closeTimerRef.current) {
+      clearTimeout(closeTimerRef.current);
+      closeTimerRef.current = null;
+    }
+    setIsSolutionsOpen(true);
+  };
+
+  const scheduleClose = () => {
+    closeTimerRef.current = setTimeout(() => {
+      setIsSolutionsOpen(false);
+    }, 120);
+  };
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (
+        isSolutionsOpen &&
+        navWrapperRef.current &&
+        !navWrapperRef.current.contains(e.target as Node)
+      ) {
+        setIsSolutionsOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [isSolutionsOpen]);
+
+  // Cleanup timer on unmount
+  useEffect(() => {
+    return () => {
+      if (closeTimerRef.current) clearTimeout(closeTimerRef.current);
+    };
+  }, []);
+
   const isActive =
     isScrolled || isMobileMenuOpen || isNavHovered || isSolutionsOpen;
 
@@ -94,14 +136,11 @@ export default function Navbar() {
     <>
       {/* ── NAV SHELL ── */}
       <div
+        ref={navWrapperRef}
         className={cn(
           "fixed top-0 left-0 w-full z-[100] transition-colors duration-500",
           isActive ? "text-black" : "text-white",
         )}
-        onMouseLeave={() => {
-          setIsNavHovered(false);
-          setIsSolutionsOpen(false);
-        }}
       >
         {/* Sliding white background */}
         <div
@@ -112,9 +151,18 @@ export default function Navbar() {
         />
 
         {/* ── NAV BAR ── */}
-        <nav className="h-20" onMouseEnter={() => setIsNavHovered(true)}>
+        <nav
+          className="h-20"
+          onMouseEnter={() => setIsNavHovered(true)}
+          onMouseLeave={() => {
+            setIsNavHovered(false);
+            // Only schedule close if cursor isn't moving into the mega-menu
+            // (the mega-menu has its own onMouseEnter/onMouseLeave)
+            scheduleClose();
+          }}
+        >
           <div className="max-w-[1800px] mx-auto px-6 xl:px-10 h-full grid grid-cols-3 items-center font-bricolage tracking-[0.15em] text-[13px] font-medium">
-            {/* MOBILE / TABLET: Hamburger — left */}
+            {/* MOBILE: Hamburger */}
             <div className="flex xl:hidden items-center">
               <button
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -124,7 +172,7 @@ export default function Navbar() {
               </button>
             </div>
 
-            {/* LOGO — left on desktop, center on mobile/tablet */}
+            {/* LOGO */}
             <div className="flex xl:col-auto justify-center xl:justify-start relative z-[110]">
               <img
                 src="/images/buildchem.png"
@@ -136,22 +184,25 @@ export default function Navbar() {
               />
             </div>
 
-            {/* DESKTOP CENTER — nav links + solutions */}
+            {/* DESKTOP CENTER */}
             <div className="hidden xl:flex items-center justify-center gap-6 2xl:gap-8 h-full">
               {NAV_LINKS.map((item) => (
-  <Link
-    key={item.label}
-    href={item.href}
-    className="nav-link-animated py-1 uppercase hover:opacity-50 whitespace-nowrap"
-  >
-    {item.label}
-  </Link>
-))}
+                <Link
+                  key={item.label}
+                  href={item.href}
+                  className="nav-link-animated py-1 uppercase hover:opacity-50 whitespace-nowrap"
+                >
+                  {item.label}
+                </Link>
+              ))}
 
               {/* SOLUTIONS TRIGGER */}
               <button
-                onMouseEnter={() => setIsSolutionsOpen(true)}
-                onClick={() => setIsSolutionsOpen(!isSolutionsOpen)}
+                onMouseEnter={openDropdown}
+                onMouseLeave={scheduleClose}
+                onClick={() =>
+                  isSolutionsOpen ? setIsSolutionsOpen(false) : openDropdown()
+                }
                 className={cn(
                   "flex items-center gap-1 nav-link-animated py-1 uppercase tracking-widest whitespace-nowrap",
                   isSolutionsOpen && "after:scale-x-100",
@@ -168,7 +219,7 @@ export default function Navbar() {
               </button>
             </div>
 
-            {/* DESKTOP RIGHT — Free Quote CTA */}
+            {/* DESKTOP RIGHT */}
             <div className="hidden xl:flex items-center justify-end h-full">
               <Link
                 href="/contact"
@@ -183,19 +234,19 @@ export default function Navbar() {
               </Link>
             </div>
 
-            {/* MOBILE / TABLET RIGHT — empty spacer to keep logo centered */}
+            {/* MOBILE RIGHT spacer */}
             <div className="flex xl:hidden items-center justify-end flex-1 relative z-[110]" />
           </div>
+
           {/* ── DESKTOP MEGA MENU ── */}
-          {/* Outer: grid-rows trick for exact-height smooth expansion */}
           <div
             className={cn(
               "hidden xl:grid w-full transition-[grid-template-rows] duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]",
               isSolutionsOpen ? "grid-rows-[1fr]" : "grid-rows-[0fr]",
             )}
-            onMouseEnter={() => setIsSolutionsOpen(true)}
+            onMouseEnter={openDropdown}
+            onMouseLeave={scheduleClose}
           >
-            {/* Inner: overflow-hidden clips during animation; border fades in */}
             <div
               className={cn(
                 "overflow-hidden transition-[opacity,border-color] duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] border-t bg-white",
@@ -249,10 +300,8 @@ export default function Navbar() {
                   View All Solutions →
                 </Link>
               </div>
-            </div>{" "}
-            {/* /inner overflow-hidden */}
-          </div>{" "}
-          {/* /grid-rows outer */}
+            </div>
+          </div>
         </nav>
       </div>
 
@@ -275,15 +324,15 @@ export default function Navbar() {
             {/* MAIN PANEL */}
             <div className="w-1/2 h-full flex flex-col px-8 gap-1 overflow-y-auto">
               {NAV_LINKS.map((item) => (
-  <Link
-    key={item.label}
-    href={item.href}
-    onClick={() => setIsMobileMenuOpen(false)}
-    className="border-b border-black/5 py-5 text-xl font-bold uppercase tracking-widest block"
-  >
-    {item.label}
-  </Link>
-))}
+                <Link
+                  key={item.label}
+                  href={item.href}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="border-b border-black/5 py-5 text-xl font-bold uppercase tracking-widest block"
+                >
+                  {item.label}
+                </Link>
+              ))}
 
               <button
                 onClick={() => setMobileSubmenu("solutions")}
@@ -292,7 +341,6 @@ export default function Navbar() {
                 Solutions <ChevronRight size={20} />
               </button>
 
-              {/* FREE QUOTE CTA — below nav links */}
               <div className="pt-6">
                 <Link
                   href="/contact"

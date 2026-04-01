@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
+import Link from "next/link";
 import { motion } from "framer-motion";
 
 const keyFeatures = [
@@ -66,12 +66,15 @@ export function CtaSection() {
             ))}
           </div>
 
-          <Button
-            size="lg"
-            className="mt-10 bg-[#004AAD] px-8 text-white hover:bg-[#003a8c]"
-          >
-            Request a Free Consultation
-          </Button>
+          <Link href="/contact">
+            <motion.button
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.97 }}
+              className="mt-10 bg-[#004AAD] px-8 py-3.5 text-white text-sm font-semibold hover:bg-[#003a8c] transition-colors duration-300"
+            >
+              Request a Free Consultation
+            </motion.button>
+          </Link>
         </div>
       </div>
     </section>
