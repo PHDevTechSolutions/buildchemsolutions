@@ -2,14 +2,12 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { db } from "@/lib/firebase";
 import { collection, query, orderBy, onSnapshot } from "firebase/firestore";
-import Image from "next/image";
 import {
   ArrowRight,
-  Globe,
-  ChevronUp,
   ChevronDown,
   CheckCircle2,
   Star,
@@ -17,10 +15,13 @@ import {
   Target,
   Zap,
   Users,
-  ArrowLeft,
+  MapPin,
+  Clock,
+  Briefcase,
 } from "lucide-react";
 import Navbar from "@/components/homepage/nav";
 import { Footer } from "@/components/homepage/footer";
+
 export default function CareersPage() {
   const [expandedJob, setExpandedJob] = useState<string | null>(null);
   const [jobs, setJobs] = useState<any[]>([]);
@@ -45,306 +46,308 @@ export default function CareersPage() {
 
   const benefits = [
     {
-      icon: <Zap className="text-[#dcb485]" />,
-      title: "Fast-Growing and Innovative",
-      desc: "Be at the forefront of industry innovation.",
+      icon: <Zap size={24} className="text-blue-600" />,
+      title: "Fast-Growing & Innovative",
+      desc: "Be at the forefront of construction industry innovation.",
     },
     {
-      icon: <Target className="text-[#dcb485]" />,
-      title: "Learn and Grow",
+      icon: <Target size={24} className="text-blue-600" />,
+      title: "Learn & Grow",
       desc: "Mentorship and hands-on training to become an expert.",
     },
     {
-      icon: <Users className="text-[#dcb485]" />,
-      title: "Collaborative Team Culture",
+      icon: <Users size={24} className="text-blue-600" />,
+      title: "Collaborative Culture",
       desc: "Work in a dynamic, fun, and supportive environment.",
     },
     {
-      icon: <Lightbulb className="text-[#dcb485]" />,
+      icon: <Lightbulb size={24} className="text-blue-600" />,
       title: "Driven by Impact",
-      desc: "Contribute to projects that make real impact.",
+      desc: "Contribute to projects that make a real difference.",
     },
     {
-      icon: <Star className="text-[#dcb485]" />,
+      icon: <Star size={24} className="text-blue-600" />,
       title: "Competitive Compensation",
       desc: "We value top talent and offer excellent benefits.",
     },
   ];
 
   return (
-    <div className="min-h-screen bg-white font-sans selection:bg-[#dcb485]/10 selection:text-[#dcb485] overflow-x-hidden">
+    <div className="min-h-screen bg-white">
       <Navbar />
 
-      {/* HERO SECTION */}
-      <section className="relative min-h-[60vh] md:min-h-[70vh] flex items-center justify-center overflow-hidden pt-safe-top pb-safe-bottom">
-        <div className="absolute inset-0">
-          <Image
-            src="/images/vah-hero.png"
-            alt="Careers at VAH"
-            fill
-            className="object-cover brightness-[0.20]"
-            priority
-          />
-        </div>
-
-        <div className="relative z-10 max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 w-full">
-          <div className="flex flex-col items-center justify-center gap-8 text-center">
-            {/* Text */}
-            <div className="max-w-2xl w-full animate-[fadeUp_0.6s_ease-out]">
-              <h1 className="text-[22px] xs:text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black tracking-tight text-white mb-4 text-balance leading-tight">
-                Join Our
-                <span className="block text-[#dcb485]">Growing Team</span>
-              </h1>
-
-              <p className="text-[13px] xs:text-sm sm:text-base md:text-lg text-white/90 mb-8 text-pretty leading-relaxed">
-                Be part of a dynamic team driving innovation and excellence in
-                industrial solutions. We're looking for talented individuals who
-                want to make an impact.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* JOBS SECTION */}
-      <div className="pt-6 px-6 md:px-10 max-w-7xl mx-auto">
-        <Link
-          href="/"
-          className="inline-flex items-center gap-2 text-[11px] font-bold uppercase tracking-widest text-gray-500 hover:text-[#dcb485] transition-colors group"
-        >
-          <div className="w-8 h-8 flex items-center justify-center rounded-full bg-gray-50 group-hover:bg-[#dcb485]/10 transition-colors">
-            <ArrowLeft size={14} />
-          </div>
-          Back to Home
-        </Link>
-      </div>
-      <section
-        className="relative pt-20 pb-16 md:pt-32 md:pb-32 px-6"
-        id="jobs"
-      >
-        <div className="max-w-7xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="text-center mb-16"
-          >
-            <span className="text-[#dcb485] text-[10px] md:text-[11px] font-black uppercase tracking-[0.4em] mb-4 block italic">
-              Available Positions
+      {/* ── HERO ── */}
+      <section className="relative h-[55vh] min-h-[400px] flex items-center justify-center overflow-hidden">
+        <Image
+          src="/images/hero-image.jpg"
+          alt="Careers at Buildchem"
+          fill
+          className="object-cover"
+          priority
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/65 via-black/55 to-black/70" />
+        <div className="relative z-10 text-center px-6 max-w-3xl mx-auto">
+          <div className="flex items-center justify-center gap-3 px-4 py-2 border border-white/30 w-fit mx-auto mb-6">
+            <div className="w-2 h-2 bg-blue-400" />
+            <span className="text-xs font-medium text-white/80 tracking-wide uppercase">
+              Join Our Team
             </span>
-            <h2 className="text-4xl md:text-6xl font-black text-gray-900 tracking-tighter uppercase leading-[0.9]">
-              Current <span className="text-[#dcb485]">Openings</span>
-            </h2>
-          </motion.div>
-
-          {/* JOB LIST */}
-          <div className="max-w-7xl mx-auto mt-16">
-            <motion.div
-              layout
-              className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start"
-            >
-              {loading
-                ? [1, 2, 3, 4].map((i) => (
-                    <div
-                      key={i}
-                      className="h-64 w-full bg-gray-50 animate-pulse rounded-[2rem]"
-                    />
-                  ))
-                : jobs.map((job) => (
-                    <motion.div
-                      layout
-                      key={job.id}
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, scale: 0.95 }}
-                      transition={{
-                        type: "spring",
-                        stiffness: 300,
-                        damping: 30,
-                      }}
-                      className={`relative border transition-shadow duration-500 h-fit ${
-                        expandedJob === job.id
-                          ? "bg-gray-50 border-[#dcb485] shadow-2xl z-10"
-                          : "bg-white border-gray-100 hover:border-gray-300 hover:shadow-lg z-0"
-                      }`}
-                    >
-                      <div
-                        className="p-8 md:p-10 cursor-pointer flex flex-col gap-6"
-                        onClick={() =>
-                          setExpandedJob(expandedJob === job.id ? null : job.id)
-                        }
-                      >
-                        <div className="flex items-center justify-between">
-                          <div className="flex flex-wrap gap-2">
-                            <span className="px-3 py-1 bg-black text-white text-[9px] font-bold uppercase rounded-md tracking-widest">
-                              {job.category}
-                            </span>
-                            <span className="text-[9px] font-bold text-gray-400 uppercase tracking-widest italic">
-                              {job.jobType}
-                            </span>
-                          </div>
-                          <motion.div
-                            animate={{
-                              rotate: expandedJob === job.id ? 180 : 0,
-                            }}
-                            className={`w-10 h-10 flex items-center justify-center rounded-full transition-colors ${
-                              expandedJob === job.id
-                                ? "bg-[#dcb485] text-black"
-                                : "bg-gray-50 text-gray-400"
-                            }`}
-                          >
-                            <ChevronDown size={20} />
-                          </motion.div>
-                        </div>
-
-                        <div>
-                          <h3 className="text-2xl md:text-3xl font-bold text-gray-900 uppercase tracking-tight leading-[1.1] mb-2">
-                            {job.title}
-                          </h3>
-                          <p className="text-gray-500 text-[13px] flex items-center gap-1.5 font-bold italic">
-                            <Globe size={14} className="text-[#dcb485]" />{" "}
-                            {job.location}
-                          </p>
-                        </div>
-                      </div>
-
-                      <AnimatePresence>
-                        {expandedJob === job.id && (
-                          <motion.div
-                            initial={{ height: 0, opacity: 0 }}
-                            animate={{ height: "auto", opacity: 1 }}
-                            exit={{ height: 0, opacity: 0 }}
-                            className="overflow-hidden"
-                          >
-                            <div className="px-8 md:px-10 pb-10 pt-6 border-t border-gray-200">
-                              <h4 className="text-[9px] font-bold uppercase text-[#dcb485] tracking-widest mb-4">
-                                Qualifications:
-                              </h4>
-                              <ul className="space-y-3 mb-8">
-                                {job.qualifications?.map(
-                                  (q: string, i: number) => (
-                                    <li
-                                      key={i}
-                                      className="flex gap-3 text-sm text-gray-700 font-medium leading-tight"
-                                    >
-                                      <CheckCircle2
-                                        size={16}
-                                        className="text-[#dcb485] shrink-0 mt-0.5"
-                                      />{" "}
-                                      {q}
-                                    </li>
-                                  ),
-                                )}
-                              </ul>
-
-                              <Link
-                                href={{
-                                  pathname: "/careers/apply",
-                                  query: {
-                                    jobId: job.id,
-                                    jobTitle: job.title,
-                                  },
-                                }}
-                                className="w-full md:w-auto bg-gray-900 text-white px-8 py-5 rounded-xl font-bold uppercase text-[10px] tracking-widest hover:bg-[#dcb485] hover:text-gray-900 transition-all shadow-lg flex items-center justify-center gap-3"
-                              >
-                                Apply for this position <ArrowRight size={16} />
-                              </Link>
-                            </div>
-                          </motion.div>
-                        )}
-                      </AnimatePresence>
-                    </motion.div>
-                  ))}
-            </motion.div>
           </div>
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-normal tracking-tight text-white mb-4">
+            {"Build Your Career".split(" ").map((word, i) => (
+              <motion.span
+                key={i}
+                initial={{ filter: "blur(10px)", opacity: 0 }}
+                animate={{ filter: "blur(0px)", opacity: 1 }}
+                transition={{ duration: 0.4, delay: i * 0.08 }}
+                className="inline-block mr-[0.25em]"
+              >
+                {word}
+              </motion.span>
+            ))}
+          </h1>
+          <p className="text-white/75 text-base md:text-lg leading-relaxed">
+            Join a team driving innovation and excellence in construction
+            solutions.
+          </p>
         </div>
       </section>
 
-      {/* WHY WORK WITH US SECTION */}
-      <section className="relative py-20 md:py-32 px-6 bg-[url('/images/HERO.png')] bg-cover bg-center">
-        {/* DARK OVERLAY */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/60 to-black/80" />
-
-        {/* CONTENT */}
-        <div className="relative max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/90 rounded-full shadow-sm border border-gray-100 mb-4">
-              <Star className="text-yellow-500 fill-yellow-500" size={16} />
-              <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-gray-900">
-                Why Work With Us
+      {/* ── OPEN POSITIONS ── */}
+      <section className="py-24 md:py-32 bg-white border-b border-gray-200/50">
+        <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-16">
+          <div className="flex flex-col gap-6 mb-16">
+            <div className="flex items-center gap-3 px-4 py-2 border border-gray-300 w-fit">
+              <div className="w-2.5 h-2.5 bg-blue-600" />
+              <span className="text-sm font-medium text-gray-600 tracking-wide">
+                Available Positions
               </span>
             </div>
+            <h2 className="text-4xl md:text-5xl font-normal text-gray-900 tracking-tight">
+              {"Current Openings".split(" ").map((word, i) => (
+                <motion.span
+                  key={i}
+                  initial={{ filter: "blur(10px)", opacity: 0 }}
+                  whileInView={{ filter: "blur(0px)", opacity: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.4, delay: i * 0.05 }}
+                  className="inline-block mr-[0.25em]"
+                >
+                  {word}
+                </motion.span>
+              ))}
+            </h2>
+            <p className="text-gray-600 text-base max-w-xl leading-relaxed">
+              We&apos;re looking for passionate people who want to make an
+              impact in the construction industry.
+            </p>
+          </div>
 
-            <h2 className="text-4xl md:text-6xl font-bold uppercase tracking-tighter text-white leading-[0.9]">
-              Our Culture & <span className="text-[#dcb485]">Benefits</span>
+          {/* Job List */}
+          {loading ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {[1, 2, 3, 4].map((i) => (
+                <div
+                  key={i}
+                  className="h-48 bg-gray-50 animate-pulse border border-gray-200"
+                />
+              ))}
+            </div>
+          ) : jobs.length === 0 ? (
+            <div className="text-center py-24 border border-gray-200">
+              <Briefcase size={36} className="text-gray-300 mx-auto mb-4" />
+              <p className="text-gray-500 text-lg font-medium">
+                No open positions at the moment.
+              </p>
+              <p className="text-gray-400 text-sm mt-2">
+                Check back soon or send us your CV.
+              </p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {jobs.map((job, idx) => (
+                <motion.div
+                  key={job.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.4, delay: idx * 0.05 }}
+                  className={`border transition-all duration-300 ${
+                    expandedJob === job.id
+                      ? "border-blue-200 bg-blue-50/30"
+                      : "border-gray-200 bg-white hover:border-blue-200 hover:shadow-sm"
+                  }`}
+                >
+                  <button
+                    onClick={() =>
+                      setExpandedJob(expandedJob === job.id ? null : job.id)
+                    }
+                    className="w-full text-left p-6 md:p-8"
+                  >
+                    <div className="flex items-start justify-between gap-4">
+                      <div className="flex-1">
+                        <div className="flex flex-wrap gap-2 mb-3">
+                          <span className="text-[10px] font-semibold uppercase tracking-wider bg-gray-900 text-white px-2.5 py-1">
+                            {job.category}
+                          </span>
+                          <span className="text-[10px] font-medium text-gray-500 uppercase tracking-wider border border-gray-200 px-2.5 py-1">
+                            {job.jobType}
+                          </span>
+                        </div>
+                        <h3 className="text-xl md:text-2xl font-semibold text-gray-900 tracking-tight mb-3">
+                          {job.title}
+                        </h3>
+                        <div className="flex flex-wrap gap-4 text-sm text-gray-500">
+                          <span className="flex items-center gap-1.5">
+                            <MapPin size={13} className="text-blue-600" />
+                            {job.location || "Metro Manila"}
+                          </span>
+                          <span className="flex items-center gap-1.5">
+                            <Clock size={13} className="text-blue-600" />
+                            {job.jobType || "Full-time"}
+                          </span>
+                        </div>
+                      </div>
+                      <motion.div
+                        animate={{ rotate: expandedJob === job.id ? 180 : 0 }}
+                        transition={{ duration: 0.25 }}
+                        className={`w-9 h-9 flex items-center justify-center flex-shrink-0 border transition-colors ${
+                          expandedJob === job.id
+                            ? "bg-blue-600 border-blue-600 text-white"
+                            : "border-gray-200 text-gray-400"
+                        }`}
+                      >
+                        <ChevronDown size={18} />
+                      </motion.div>
+                    </div>
+                  </button>
+
+                  <AnimatePresence>
+                    {expandedJob === job.id && (
+                      <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: "auto", opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.3 }}
+                        className="overflow-hidden"
+                      >
+                        <div className="px-6 md:px-8 pb-8 pt-0 border-t border-gray-200">
+                          <p className="text-sm text-gray-500 uppercase tracking-wider font-semibold mb-4 pt-6">
+                            Qualifications
+                          </p>
+                          <ul className="space-y-3 mb-8">
+                            {job.qualifications?.map((q: string, i: number) => (
+                              <li
+                                key={i}
+                                className="flex items-start gap-3 text-sm text-gray-700"
+                              >
+                                <CheckCircle2
+                                  size={15}
+                                  className="text-blue-600 mt-0.5 flex-shrink-0"
+                                />
+                                {q}
+                              </li>
+                            ))}
+                          </ul>
+                          <Link
+                            href={{
+                              pathname: "/careers/apply",
+                              query: { jobId: job.id, jobTitle: job.title },
+                            }}
+                            className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 text-sm font-medium transition-colors"
+                          >
+                            Apply for this Position
+                            <ArrowRight size={15} />
+                          </Link>
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </motion.div>
+              ))}
+            </div>
+          )}
+        </div>
+      </section>
+
+      {/* ── BENEFITS ── */}
+      <section className="py-24 md:py-32 bg-white border-b border-gray-200/50">
+        <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-16">
+          <div className="flex flex-col gap-6 mb-16">
+            <div className="flex items-center gap-3 px-4 py-2 border border-gray-300 w-fit">
+              <div className="w-2.5 h-2.5 bg-blue-600" />
+              <span className="text-sm font-medium text-gray-600 tracking-wide">
+                Why Join Us
+              </span>
+            </div>
+            <h2 className="text-4xl md:text-5xl font-normal text-gray-900 tracking-tight">
+              {"Culture & Benefits".split(" ").map((word, i) => (
+                <motion.span
+                  key={i}
+                  initial={{ filter: "blur(10px)", opacity: 0 }}
+                  whileInView={{ filter: "blur(0px)", opacity: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.4, delay: i * 0.05 }}
+                  className="inline-block mr-[0.25em]"
+                >
+                  {word}
+                </motion.span>
+              ))}
             </h2>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {benefits.map((b, i) => (
               <motion.div
-                whileHover={{ y: -5 }}
                 key={i}
-                className="bg-white p-8 md:p-10 rounded-[2rem] border border-gray-100 shadow-sm flex flex-col items-center text-center md:items-start md:text-left gap-4"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.4, delay: i * 0.05 }}
+                className="p-8 border border-gray-200 hover:border-blue-200 hover:shadow-sm transition-all duration-300 group"
               >
-                <div className="p-4 bg-red-50 rounded-2xl">
-                  {React.cloneElement(b.icon as React.ReactElement<any>, {
-                    size: 28,
-                  })}
+                <div className="w-10 h-10 bg-blue-50 flex items-center justify-center mb-5 group-hover:bg-blue-100 transition-colors">
+                  {b.icon}
                 </div>
-                <div>
-                  <h3 className="text-lg md:text-xl font-bold uppercase tracking-tight text-gray-900 mb-2 leading-tight">
-                    {b.title}
-                  </h3>
-                  <p className="text-gray-500 text-sm font-medium leading-relaxed">
-                    {b.desc}
-                  </p>
-                </div>
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                  {b.title}
+                </h3>
+                <p className="text-sm text-gray-600 leading-relaxed">
+                  {b.desc}
+                </p>
               </motion.div>
             ))}
           </div>
-
-          {/* FOOTER CTA */}
-          <div className="mt-24 text-center">
-            <div className="bg-white p-8 md:p-16 rounded-[3rem] border border-gray-100 shadow-xl max-w-4xl mx-auto relative overflow-hidden">
-              <div className="absolute top-0 right-0 p-4 opacity-10">
-                <Lightbulb size={120} />
-              </div>
-
-              <h3 className="text-3xl md:text-5xl font-bold uppercase tracking-tighter text-gray-900 mb-6">
-                Still looking for your <br />
-                <span className="text-[#dcb485]">spot on the team?</span>
-              </h3>
-
-              <p className="text-gray-500 font-medium mb-8 max-w-xl mx-auto text-sm md:text-base italic">
-                We're always on the lookout for passionate people who want to
-                make an impact.
-              </p>
-
-              <a
-                href="mailto:info@valueacquisitions.com"
-                className="inline-flex items-center gap-2 text-sm md:text-lg font-bold text-[#dcb485] border-b-2 border-[#dcb485] pb-1 hover:text-gray-900 hover:border-gray-900 transition-all uppercase tracking-widest"
-              >
-                info@valueacquisitions.com
-              </a>
-            </div>
-          </div>
         </div>
       </section>
 
-      {/* FOOTER */}
-      <footer className="bg-black text-white py-12 px-6">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
-          <p className="text-[10px] font-bold text-gray-600 tracking-[0.3em] uppercase">
-            © 2026 All Rights Reserved
-          </p>
-          <button
-            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-            className="flex items-center gap-2 text-gray-500 hover:text-white transition-all text-[10px] font-bold uppercase"
-          >
-            Back to Top <ChevronUp size={16} />
-          </button>
+      {/* ── CTA BANNER ── */}
+      <section className="relative overflow-hidden">
+        <div
+          className="absolute inset-0 bg-cover bg-center"
+          style={{ backgroundImage: "url('/images/hero-image.jpg')" }}
+        >
+          <div className="absolute inset-0 bg-black/60" />
         </div>
-      </footer>
+        <div className="relative max-w-7xl mx-auto px-6 md:px-12 lg:px-16 py-24 md:py-32 text-center">
+          <h2 className="text-3xl md:text-4xl font-normal text-white mb-4 tracking-tight">
+            Don&apos;t see the right role?
+          </h2>
+          <p className="text-white/75 text-base leading-relaxed mb-8 max-w-xl mx-auto">
+            We&apos;re always on the lookout for passionate people. Send us your
+            CV and we&apos;ll be in touch.
+          </p>
+          <a
+            href="mailto:info@buildchem.com.ph"
+            className="inline-flex items-center gap-2 bg-white text-gray-900 px-8 py-3 text-sm font-medium hover:bg-white/90 transition-colors"
+          >
+            Send Your CV
+            <ArrowRight size={15} />
+          </a>
+        </div>
+      </section>
+
+      <Footer />
     </div>
   );
 }

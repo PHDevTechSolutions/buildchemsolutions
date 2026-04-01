@@ -14,33 +14,34 @@ interface FAQItem {
 const faqs: FAQItem[] = [
   {
     id: "1",
-    question: "How does Aegis Core differ from traditional firewalls?",
+    question: "What types of projects are your products suitable for?",
     answer:
-      "Traditional firewalls rely on static rules and signature-based detection, which can't keep pace with modern AI-driven attacks. Aegis Core uses autonomous machine learning to predict and neutralize zero-day threats in real-time, learning your network's unique patterns and adapting without manual updates or human intervention.",
+      "Our product range covers residential, commercial, and infrastructure projects of all scales. From waterproofing a basement apartment to rehabilitating a multi-storey carpark or protecting a bridge deck — we have a tested solution for every application and exposure condition.",
   },
   {
     id: "2",
-    question: "What is the typical deployment timeline?",
+    question:
+      "Are your products compliant with local and international standards?",
     answer:
-      "Most organizations can deploy Skydda in under 48 hours. Our autonomous system learns your network baseline within 3-5 days and reaches full operational capacity within two weeks. Unlike legacy solutions that take months to configure, Aegis Core self-optimizes as it learns your environment.",
+      "Yes. All our products are tested and certified to meet relevant Philippine national standards as well as internationally recognized benchmarks including ASTM, BS EN, and ISO. We provide full technical datasheets and certificates of conformance upon request.",
   },
   {
     id: "3",
-    question: "Does Skydda integrate with existing security infrastructure?",
+    question: "Do you provide on-site technical support?",
     answer:
-      "Yes. Skydda seamlessly integrates with your existing SIEM, SOC tools, and security stack. Our API-first architecture allows bidirectional data flow with platforms like Splunk, CrowdStrike, and Palo Alto Networks, enhancing your current investments rather than replacing them.",
+      "Absolutely. Our team of trained technical representatives is available for on-site consultations, application guidance, and quality checks throughout your project. We believe product performance starts with proper application, and we're committed to being there every step of the way.",
   },
   {
     id: "4",
-    question: "What kind of threats can Aegis Core detect?",
+    question: "How do I select the right waterproofing system for my project?",
     answer:
-      "Aegis Core detects and neutralizes zero-day exploits, advanced persistent threats (APTs), ransomware, credential stuffing, DDoS attacks, and insider threats. Our predictive heuristics analyze 10,000+ attack vectors per second to identify threats before they breach your perimeter.",
+      "The right system depends on factors like substrate type, exposure to water pressure, foot traffic, and aesthetic requirements. Our technical team will assess your site conditions and recommend the most suitable solution — whether that's a cementitious coating, crystalline system, liquid membrane, or sheet-applied product.",
   },
   {
     id: "5",
-    question: "Do you offer compliance support and reporting?",
+    question: "Can your concrete admixtures be used with any mix design?",
     answer:
-      "Absolutely. Skydda automatically generates compliance reports for SOC 2, ISO 27001, GDPR, HIPAA, and PCI DSS. Every threat detection and response is documented with full audit trails, making compliance audits straightforward and reducing your team's workload significantly.",
+      "Our admixtures are compatible with most standard and blended cement mixes. We recommend a pre-project trial mix to confirm compatibility and establish optimal dosage rates. Our technical staff can assist with mix design optimization at no additional cost.",
   },
 ];
 
@@ -61,12 +62,12 @@ export function FaqSection() {
           {/* Left Column - Header */}
           <div className="flex flex-col gap-6">
             <div className="flex items-center gap-3 px-4 py-2 border border-gray-300 w-fit">
-              <div className="w-2.5 h-2.5 bg-blue-600" />
+              <div className="w-2.5 h-2.5 bg-[#004AAD]" />
               <span className="text-sm font-medium text-gray-600 tracking-wide">
                 FAQ
               </span>
             </div>
-            
+
             <h2 className="text-balance text-4xl md:text-5xl lg:text-6xl font-normal text-gray-900 tracking-tight leading-[1.1]">
               {"Common Questions".split(" ").map((word, i) => (
                 <motion.span
@@ -83,9 +84,9 @@ export function FaqSection() {
             </h2>
 
             <p className="text-balance text-base md:text-lg text-gray-600 leading-relaxed max-w-md">
-              Get quick answers about Skydda's AI-powered security platform and
-              how autonomous threat detection protects your organization. Can't
-              find what you're looking for? Reach out below.
+              Get quick answers about our construction chemicals, application
+              processes, and technical support. Can't find what you're looking
+              for? Reach out to our team directly.
             </p>
           </div>
 
@@ -96,7 +97,7 @@ export function FaqSection() {
                 key={faq.id}
                 className={cn(
                   "border-t border-gray-200/50",
-                  index === faqs.length - 1 && "border-b"
+                  index === faqs.length - 1 && "border-b",
                 )}
               >
                 <button

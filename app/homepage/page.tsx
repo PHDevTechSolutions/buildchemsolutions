@@ -7,6 +7,7 @@ import { CtaSection } from "@/components/homepage/cta-section";
 import { Footer } from "@/components/homepage/footer";
 import { AboutSection } from "@/components/homepage/about-section";
 import Navbar from "@/components/homepage/nav";
+import { ServicesSection } from "@/components/homepage/services-section";
 
 export default function Home() {
   return (
@@ -16,6 +17,7 @@ export default function Home() {
         <Hero />
         <LogoSection />
         <AboutSection />
+        <ServicesSection />
         <SolutionsSection />
         <ReelsSection />
         <FaqSection />

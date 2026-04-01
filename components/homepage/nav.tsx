@@ -2,20 +2,17 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import {
-  Search,
-  ShoppingBag,
-  ChevronRight,
-  Menu,
-  X,
-  ArrowLeft,
-  ChevronDown,
-} from "lucide-react";
+import { ChevronRight, Menu, X, ArrowLeft, ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { db } from "@/lib/firebase";
 import { collection, getDocs } from "firebase/firestore";
 
-const NAV_LINKS = ["Home", "About", "Blogs", "Contact", "Careers"];
+const NAV_LINKS = [
+  { label: "Home", href: "/" },
+  { label: "About", href: "/about" },
+  { label: "Blogs", href: "/blogs" },
+  { label: "Careers", href: "/careers" },
+];
 
 interface Solution {
   id: string;
@@ -32,14 +29,12 @@ export default function Navbar() {
   );
   const [isSolutionsOpen, setIsSolutionsOpen] = useState(false);
   const [isNavHovered, setIsNavHovered] = useState(false);
-
   const [solutions, setSolutions] = useState<Solution[]>([]);
   const [groupedSolutions, setGroupedSolutions] = useState<
     Record<string, Solution[]>
   >({});
   const [loading, setLoading] = useState(false);
 
-  // Fetch solutions when dropdown opens or mobile menu opens (only once)
   useEffect(() => {
     if ((isSolutionsOpen || isMobileMenuOpen) && solutions.length === 0) {
       const fetchSolutions = async () => {
@@ -76,7 +71,6 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Scroll lock for mobile
   useEffect(() => {
     if (isMobileMenuOpen) {
       const scrollY = window.scrollY;
@@ -109,7 +103,7 @@ export default function Navbar() {
           setIsSolutionsOpen(false);
         }}
       >
-        {/* Sliding white background — covers nav bar + mega menu together */}
+        {/* Sliding white background */}
         <div
           className={cn(
             "absolute inset-0 bg-white transform transition-transform duration-500 ease-in-out -z-10",
@@ -119,9 +113,9 @@ export default function Navbar() {
 
         {/* ── NAV BAR ── */}
         <nav className="h-20" onMouseEnter={() => setIsNavHovered(true)}>
-          <div className="max-w-[1800px] mx-auto px-6 xl:px-10 h-full flex items-center justify-between font-bricolage tracking-[0.15em] text-[13px] font-medium">
-            {/* MOBILE / TABLET TOGGLE */}
-            <div className="flex xl:hidden flex-1 items-center">
+          <div className="max-w-[1800px] mx-auto px-6 xl:px-10 h-full grid grid-cols-3 items-center font-bricolage tracking-[0.15em] text-[13px] font-medium">
+            {/* MOBILE / TABLET: Hamburger — left */}
+            <div className="flex xl:hidden items-center">
               <button
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                 className="relative z-[110] p-2 -ml-2"
@@ -130,17 +124,29 @@ export default function Navbar() {
               </button>
             </div>
 
-            {/* DESKTOP LINKS */}
-            <div className="hidden xl:flex items-center gap-6 2xl:gap-8 flex-1 h-full">
+            {/* LOGO — left on desktop, center on mobile/tablet */}
+            <div className="flex xl:col-auto justify-center xl:justify-start relative z-[110]">
+              <img
+                src="/images/buildchem.png"
+                alt="Logo"
+                className={cn(
+                  "h-8 md:h-10 w-auto object-contain cursor-pointer transition-all duration-500 ease-in-out",
+                  isActive ? "brightness-100 invert-0" : "brightness-0 invert",
+                )}
+              />
+            </div>
+
+            {/* DESKTOP CENTER — nav links + solutions */}
+            <div className="hidden xl:flex items-center justify-center gap-6 2xl:gap-8 h-full">
               {NAV_LINKS.map((item) => (
-                <a
-                  key={item}
-                  href="/"
-                  className="nav-link-animated py-1 uppercase hover:opacity-50 whitespace-nowrap"
-                >
-                  {item}
-                </a>
-              ))}
+  <Link
+    key={item.label}
+    href={item.href}
+    className="nav-link-animated py-1 uppercase hover:opacity-50 whitespace-nowrap"
+  >
+    {item.label}
+  </Link>
+))}
 
               {/* SOLUTIONS TRIGGER */}
               <button
@@ -162,101 +168,92 @@ export default function Navbar() {
               </button>
             </div>
 
-            {/* LOGO */}
-            <div className="flex-1 flex justify-center relative z-[110]">
-              <img
-                src="/images/buildchem.png"
-                alt="Logo"
+            {/* DESKTOP RIGHT — Free Quote CTA */}
+            <div className="hidden xl:flex items-center justify-end h-full">
+              <Link
+                href="/contact"
                 className={cn(
-                  "h-8 md:h-10 w-auto object-contain cursor-pointer transition-all duration-500 ease-in-out",
-                  isActive ? "brightness-100 invert-0" : "brightness-0 invert",
+                  "px-5 py-2 text-[12px] font-semibold uppercase tracking-widest transition-all duration-300 whitespace-nowrap",
+                  isActive
+                    ? "bg-[#004AAD] text-white hover:bg-[#003a8c]"
+                    : "bg-white text-black hover:bg-white/90",
                 )}
-              />
-            </div>
-
-            {/* ACTIONS */}
-            <div className="flex items-center gap-4 xl:gap-8 flex-1 justify-end relative z-[110]">
-              <a
-                href="/"
-                className="hidden xl:block nav-link-animated py-1 uppercase"
               >
-                Login
-              </a>
-              <button className="hover:opacity-60 transition-opacity">
-                <Search size={20} strokeWidth={1.5} />
-              </button>
-              <div className="relative cursor-pointer hover:opacity-60">
-                <ShoppingBag size={20} strokeWidth={1.5} />
-                <span
-                  className={cn(
-                    "absolute -top-1 -right-2 text-[9px] w-4 h-4 flex items-center justify-center rounded-full font-bold transition-colors duration-500",
-                    isActive ? "bg-black text-white" : "bg-white text-black",
-                  )}
-                >
-                  0
-                </span>
-              </div>
+                Free Quote
+              </Link>
             </div>
-          </div>
-        </nav>
 
-        {/* ── DESKTOP MEGA MENU — extends the header down ── */}
-        <div
-          className={cn(
-            "hidden xl:block w-full overflow-hidden transition-all duration-500 ease-in-out border-t border-black/5",
-            isSolutionsOpen
-              ? "max-h-[600px] opacity-100"
-              : "max-h-0 opacity-0 border-transparent",
-          )}
-          onMouseEnter={() => setIsSolutionsOpen(true)}
-        >
-          <div className="max-w-[1800px] mx-auto px-10 py-10">
-            {loading ? (
-              <div className="flex items-center justify-center py-12 text-sm uppercase tracking-widest opacity-40">
-                Loading…
-              </div>
-            ) : (
-              <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-10">
-                {Object.entries(groupedSolutions)
-                  .sort((a, b) => b[1].length - a[1].length)
-                  .map(([label, items]) => (
-                    <div key={label} className="space-y-5">
-                      <h3 className="font-bricolage text-black text-[10px] uppercase tracking-[0.25em] border-b border-black/10 pb-3">
-                        {label}
-                        <span className="ml-2 opacity-30">
-                          ({items.length})
-                        </span>
-                      </h3>
-                      <ul className="space-y-3">
-                        {items.map((solution) => (
-                          <li key={solution.id}>
-                            <Link
-                              href={`/solutions/${solution.id}`}
-                              onClick={() => setIsSolutionsOpen(false)}
-                              className="text-[12px] font-bebas text-black/50 hover:text-black hover:translate-x-1 transition-all duration-200 inline-block uppercase tracking-wide"
-                            >
-                              {solution.title}
-                            </Link>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  ))}
-              </div>
+            {/* MOBILE / TABLET RIGHT — empty spacer to keep logo centered */}
+            <div className="flex xl:hidden items-center justify-end flex-1 relative z-[110]" />
+          </div>
+          {/* ── DESKTOP MEGA MENU ── */}
+          {/* Outer: grid-rows trick for exact-height smooth expansion */}
+          <div
+            className={cn(
+              "hidden xl:grid w-full transition-[grid-template-rows] duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]",
+              isSolutionsOpen ? "grid-rows-[1fr]" : "grid-rows-[0fr]",
             )}
-          </div>
-
-          {/* FOOTER ROW */}
-          <div className="border-t border-black/5 px-10 py-4 flex justify-end">
-            <Link
-              href="/solutions"
-              onClick={() => setIsSolutionsOpen(false)}
-              className="text-[10px] font-black uppercase tracking-widest opacity-40 hover:opacity-100 transition-opacity"
+            onMouseEnter={() => setIsSolutionsOpen(true)}
+          >
+            {/* Inner: overflow-hidden clips during animation; border fades in */}
+            <div
+              className={cn(
+                "overflow-hidden transition-[opacity,border-color] duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] border-t bg-white",
+                isSolutionsOpen
+                  ? "opacity-100 border-black/5"
+                  : "opacity-0 border-transparent",
+              )}
             >
-              View All Solutions →
-            </Link>
-          </div>
-        </div>
+              <div className="max-w-[1800px] mx-auto px-10 py-10">
+                {loading ? (
+                  <div className="flex items-center justify-center py-12 text-sm uppercase tracking-widest opacity-40">
+                    Loading…
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-10">
+                    {Object.entries(groupedSolutions)
+                      .sort((a, b) => b[1].length - a[1].length)
+                      .map(([label, items]) => (
+                        <div key={label} className="space-y-5">
+                          <h3 className="font-bricolage text-black text-[10px] uppercase tracking-[0.25em] border-b border-black/10 pb-3">
+                            {label}
+                            <span className="ml-2 opacity-30">
+                              ({items.length})
+                            </span>
+                          </h3>
+                          <ul className="space-y-3">
+                            {items.map((solution) => (
+                              <li key={solution.id}>
+                                <Link
+                                  href={`/solutions/${solution.id}`}
+                                  onClick={() => setIsSolutionsOpen(false)}
+                                  className="text-[12px] font-bebas text-black/50 hover:text-black hover:translate-x-1 transition-all duration-200 inline-block uppercase tracking-wide"
+                                >
+                                  {solution.title}
+                                </Link>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      ))}
+                  </div>
+                )}
+              </div>
+
+              <div className="border-t border-black/5 px-10 py-4 flex justify-end">
+                <Link
+                  href="/solutions"
+                  onClick={() => setIsSolutionsOpen(false)}
+                  className="text-[10px] font-black uppercase tracking-widest opacity-40 hover:opacity-100 transition-opacity"
+                >
+                  View All Solutions →
+                </Link>
+              </div>
+            </div>{" "}
+            {/* /inner overflow-hidden */}
+          </div>{" "}
+          {/* /grid-rows outer */}
+        </nav>
       </div>
 
       {/* ── MOBILE / TABLET OVERLAY ── */}
@@ -278,27 +275,32 @@ export default function Navbar() {
             {/* MAIN PANEL */}
             <div className="w-1/2 h-full flex flex-col px-8 gap-1 overflow-y-auto">
               {NAV_LINKS.map((item) => (
-                <a
-                  key={item}
-                  href="/"
-                  className="border-b border-black/5 py-5 text-xl font-bold uppercase tracking-widest"
-                >
-                  {item}
-                </a>
-              ))}
+  <Link
+    key={item.label}
+    href={item.href}
+    onClick={() => setIsMobileMenuOpen(false)}
+    className="border-b border-black/5 py-5 text-xl font-bold uppercase tracking-widest block"
+  >
+    {item.label}
+  </Link>
+))}
+
               <button
                 onClick={() => setMobileSubmenu("solutions")}
                 className="flex items-center justify-between border-b border-black/5 py-5 text-xl font-bold uppercase tracking-widest text-left"
               >
                 Solutions <ChevronRight size={20} />
               </button>
-              <div className="mt-auto py-10">
-                <a
-                  href="#"
-                  className="flex items-center gap-2 text-xs font-bold uppercase opacity-60"
+
+              {/* FREE QUOTE CTA — below nav links */}
+              <div className="pt-6">
+                <Link
+                  href="/contact"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="block w-full text-center bg-[#004AAD] text-white px-6 py-4 text-sm font-bold uppercase tracking-widest hover:bg-[#003a8c] transition-colors duration-200"
                 >
-                  Login
-                </a>
+                  Free Quote
+                </Link>
               </div>
             </div>
 
@@ -316,7 +318,6 @@ export default function Navbar() {
                   Loading…
                 </div>
               ) : solutions.length > 0 ? (
-                // Grouped solutions on mobile
                 Object.entries(groupedSolutions)
                   .sort((a, b) => b[1].length - a[1].length)
                   .map(([label, items]) => (
@@ -337,7 +338,6 @@ export default function Navbar() {
                     </div>
                   ))
               ) : (
-                // Fallback static list
                 <div className="text-xs uppercase tracking-widest opacity-40 py-6">
                   No solutions found.
                 </div>
