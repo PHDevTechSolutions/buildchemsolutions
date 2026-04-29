@@ -91,7 +91,7 @@ export function Footer() {
                 <Instagram size={16} />
               </a>
               <a
-                href="mailto:info@buildchem.com.ph"
+                href="mailto:customerservice@buildchemsolutions.com"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="p-2 rounded-[var(--radius-sm)] bg-primary-foreground/10 hover:bg-primary-foreground/20 text-primary-foreground transition-colors duration-200"
