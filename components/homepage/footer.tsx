@@ -62,13 +62,13 @@ export function Footer() {
               <br />1554 Metro Manila
             </p>
             <p className="text-sm font-semibold text-primary-foreground mb-6">
-              +63 (2) 8123-4567
+              (046) 419-6240
             </p>
             <a
-              href="mailto:info@buildchem.com.ph"
+              href="mailto:customerservice@buildchemsolutions.com"
               className="text-sm text-primary-foreground/70 hover:text-primary-foreground transition-colors duration-200 mb-6 block"
             >
-              info@buildchem.com.ph
+              customerservice@buildchemsolutions.com
             </a>
 
             <div className="flex gap-4 pt-2">
